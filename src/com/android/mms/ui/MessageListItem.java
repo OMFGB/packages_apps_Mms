@@ -549,7 +549,7 @@ public class MessageListItem extends LinearLayout implements
     private void drawLeftStatusIndicator(int msgBoxId) {
         switch (msgBoxId) {
             case Mms.MESSAGE_BOX_INBOX:
-                mMsgListItem.setBackgroundResource(R.drawable.listitem_background_lightblue);
+                mMsgListItem.setBackgroundResource(R.drawable.listitem_background_lightgrey);
                 break;
 
             case Mms.MESSAGE_BOX_DRAFTS:
