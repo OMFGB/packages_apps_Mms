@@ -162,7 +162,7 @@ public abstract class Transaction extends Observable {
      *         an HTTP error code(>=400) returned from the server.
      */
     protected byte[] sendPdu(long token, byte[] pdu, String mmscUrl) throws IOException {
-        ensureRouteToHost(mmscUrl, mTransactionSettings);
+        //ensureRouteToHost(mmscUrl, mTransactionSettings);
         return HttpUtils.httpConnection(
                 mContext, token,
                 mmscUrl,
@@ -182,7 +182,7 @@ public abstract class Transaction extends Observable {
      *         an HTTP error code(>=400) returned from the server.
      */
     protected byte[] getPdu(String url) throws IOException {
-        ensureRouteToHost(url, mTransactionSettings);
+        //ensureRouteToHost(url, mTransactionSettings);
         return HttpUtils.httpConnection(
                 mContext, SendingProgressTokenManager.NO_TOKEN,
                 url, null, HttpUtils.HTTP_GET_METHOD,
