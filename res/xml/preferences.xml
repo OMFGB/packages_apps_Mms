@@ -106,6 +106,14 @@
   						android:title="@string/pref_omfgb_hide_avatar_title"
   						android:summary="@string/pref_omfgb_hide_avatar_summary"
   						android:defaultValue="false" />
-  
+  						
+  	<ListPreference     android:layout="?android:attr/preferenceLayoutChild"
+                        android:key="pref_key_textSize"
+                        android:defaultValue="@string/prefDefault_textSize"
+                        android:title="@string/pref_title_notification_textSize"
+                        android:summary="@string/pref_summary_notification_textSize"
+                        android:entries="@array/prefEntries_textSize"
+                        android:entryValues="@array/prefValues_textSize"
+                        android:dialogTitle="@string/prefDialogTitle_textSize" />
   </PreferenceCategory>
 </PreferenceScreen>

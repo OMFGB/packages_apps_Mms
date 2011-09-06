@@ -132,6 +132,11 @@ public class MessageListItem extends LinearLayout implements
         mDetailsIndicator = (ImageView) findViewById(R.id.details_indicator);
         mAvatar = (QuickContactBadge) findViewById(R.id.avatar);
 
+        int textSize = Integer.parseInt(mPreferences.getString(MessagingPreferenceActivity.TEXT_SIZE, "18"));
+        
+        mBodyTextView.setTextSize(textSize);
+        
+        //show compact avatar combo?
         if (mPreferences.getBoolean(MessagingPreferenceActivity.HIDE_AVATAR_IN_CONVERSATION, false)) {
             mAvatar.setVisibility(View.GONE);
         } else {

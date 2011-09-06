@@ -65,6 +65,7 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
     
     //omfgb customizations
     public static final String HIDE_AVATAR_IN_CONVERSATION = "pref_key_hide_conversation_avatar";
+    public static final String TEXT_SIZE = "pref_key_textSize";
 
     // Menu entries
     private static final int MENU_RESTORE_DEFAULTS    = 1;

@@ -775,6 +775,32 @@
 	<string name="pref_omfgb_settings_title">OMFGB Customizations</string>
 	<string name="pref_omfgb_hide_avatar_summary">Hides avatars in conversations</string>
 	<string name="pref_omfgb_hide_avatar_title">Compact convo view</string>
+	
+    <string name="pref_title_notification_textSize">Message text size</string>
+    <string name="pref_summary_notification_textSize">Size of text in conversations</string>
+    
+        <!-- The vibrate notification modes -->
+    <string-array name="prefEntries_textSize">
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18 (default)</item>
+        <item>20</item>
+    </string-array>
+    
+    <string translatable="false" name="prefDefault_textSize">18</string>
+
+    <!-- The vibrateWhen values -->
+    <string-array translatable="false" name="prefValues_textSize">
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>20</item>
+    </string-array>
+
+    <!-- Dialog title for the Vibrate dialog -->
+    <string name="prefDialogTitle_textSize">Choose a new size</string>
 
 </resources>
 
