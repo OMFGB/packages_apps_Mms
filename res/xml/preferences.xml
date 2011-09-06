@@ -101,4 +101,11 @@
                         android:entryValues="@array/prefValues_vibrateWhen"
                         android:dialogTitle="@string/prefDialogTitle_vibrateWhen" />
   </PreferenceCategory>
+  <PreferenceCategory android:title="@string/pref_omfgb_settings_title">
+  	<CheckBoxPreference android:key="pref_key_hide_conversation_avatar"
+  						android:title="@string/pref_omfgb_hide_avatar_title"
+  						android:summary="@string/pref_omfgb_hide_avatar_summary"
+  						android:defaultValue="false" />
+  
+  </PreferenceCategory>
 </PreferenceScreen>

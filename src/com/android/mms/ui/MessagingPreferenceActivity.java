@@ -62,6 +62,9 @@ public class MessagingPreferenceActivity extends PreferenceActivity {
     public static final String AUTO_RETRIEVAL           = "pref_key_mms_auto_retrieval";
     public static final String RETRIEVAL_DURING_ROAMING = "pref_key_mms_retrieval_during_roaming";
     public static final String AUTO_DELETE              = "pref_key_auto_delete";
+    
+    //omfgb customizations
+    public static final String HIDE_AVATAR_IN_CONVERSATION = "pref_key_hide_conversation_avatar";
 
     // Menu entries
     private static final int MENU_RESTORE_DEFAULTS    = 1;

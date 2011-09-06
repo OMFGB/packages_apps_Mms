@@ -17,30 +17,37 @@
 
 package com.android.mms.ui;
 
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.android.mms.MmsApp;
+import com.android.mms.R;
+import com.android.mms.data.WorkingMessage;
+import com.android.mms.transaction.Transaction;
+import com.android.mms.transaction.TransactionBundle;
+import com.android.mms.transaction.TransactionService;
+import com.android.mms.util.DownloadManager;
+import com.android.mms.util.SmileyParser;
+import com.google.android.mms.ContentType;
+import com.google.android.mms.pdu.PduHeaders;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.Paint.FontMetricsInt;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.provider.Browser;
 import android.provider.Telephony.Mms;
-import android.provider.Telephony.MmsSms;
 import android.provider.Telephony.Sms;
 import android.telephony.PhoneNumberUtils;
-import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spannable;
@@ -56,8 +63,8 @@ import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -66,16 +73,9 @@ import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
-import com.android.mms.MmsApp;
-import com.android.mms.R;
-import com.android.mms.data.WorkingMessage;
-import com.android.mms.transaction.Transaction;
-import com.android.mms.transaction.TransactionBundle;
-import com.android.mms.transaction.TransactionService;
-import com.android.mms.util.DownloadManager;
-import com.android.mms.util.SmileyParser;
-import com.google.android.mms.ContentType;
-import com.google.android.mms.pdu.PduHeaders;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class provides view of a message in the messages list.
@@ -103,9 +103,13 @@ public class MessageListItem extends LinearLayout implements
     private QuickContactBadge mAvatar;
     private Handler mHandler;
     private MessageItem mMessageItem;
+    
+    private final SharedPreferences mPreferences;
 
     public MessageListItem(Context context) {
         super(context);
+        
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public MessageListItem(Context context, AttributeSet attrs) {
@@ -113,6 +117,8 @@ public class MessageListItem extends LinearLayout implements
 
         int color = mContext.getResources().getColor(R.color.timestamp_color);
         mColorSpan = new ForegroundColorSpan(color);
+        
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Override
@@ -126,28 +132,36 @@ public class MessageListItem extends LinearLayout implements
         mDetailsIndicator = (ImageView) findViewById(R.id.details_indicator);
         mAvatar = (QuickContactBadge) findViewById(R.id.avatar);
 
-        ViewGroup.MarginLayoutParams badgeParams = (MarginLayoutParams)mAvatar.getLayoutParams();
-        final int badgeWidth = badgeParams.width + badgeParams.rightMargin + badgeParams.leftMargin;
+        if (mPreferences.getBoolean(MessagingPreferenceActivity.HIDE_AVATAR_IN_CONVERSATION, false)) {
+            mAvatar.setVisibility(View.GONE);
+        } else {
 
-        int lineHeight = mBodyTextView.getLineHeight();
-        int effectiveBadgeHeight = badgeParams.height + badgeParams.topMargin - mBodyTextView.getPaddingTop();
-        final int indentLineCount = (int) ((effectiveBadgeHeight-1) / lineHeight) + 1;
+            ViewGroup.MarginLayoutParams badgeParams = (MarginLayoutParams) mAvatar
+                    .getLayoutParams();
+            final int badgeWidth = badgeParams.width + badgeParams.rightMargin
+                    + badgeParams.leftMargin;
 
-        mLeadingMarginSpan = new LeadingMarginSpan.LeadingMarginSpan2() {
-            public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
-                    int top, int baseline, int bottom, CharSequence text,
-                    int start, int end, boolean first, Layout layout) {
-                // no op
-            }
+            int lineHeight = mBodyTextView.getLineHeight();
+            int effectiveBadgeHeight = badgeParams.height + badgeParams.topMargin
+                    - mBodyTextView.getPaddingTop();
+            final int indentLineCount = (int) ((effectiveBadgeHeight - 1) / lineHeight) + 1;
 
-            public int getLeadingMargin(boolean first) {
-                return first ? badgeWidth : 0;
-            }
+            mLeadingMarginSpan = new LeadingMarginSpan.LeadingMarginSpan2() {
+                public void drawLeadingMargin(Canvas c, Paint p, int x, int dir, int top,
+                        int baseline, int bottom, CharSequence text, int start, int end,
+                        boolean first, Layout layout) {
+                    // no op
+                }
 
-            public int getLeadingMarginLineCount() {
-                return indentLineCount;
-            }
-        };
+                public int getLeadingMargin(boolean first) {
+                    return first ? badgeWidth : 0;
+                }
+
+                public int getLeadingMarginLineCount() {
+                    return indentLineCount;
+                }
+            };
+        }
 
     }
 
